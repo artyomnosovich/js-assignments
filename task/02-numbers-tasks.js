@@ -73,7 +73,7 @@ function getAverage(value1, value2) {
  *   (-5,0) (10,-10) => 18.027756377319946
  */
 function getDistanceBetweenPoints(x1, y1, x2, y2) {
-    throw new Error('Not implemented');
+    return Math.sqrt(Math.pow(x2-x1, 2) + Math.pow(y2-y1, 2));
 }
 
 /**
@@ -89,7 +89,16 @@ function getDistanceBetweenPoints(x1, y1, x2, y2) {
  *   5*x = 0         => 0
  */
 function getLinearEquationRoot(a, b) {
-    throw new Error('Not implemented');
+    var x;
+    if (b == 0) {
+        x = 0
+        return x;
+    };
+    b = b * -1;
+    a = a * -1;
+    x = b / a;
+    x = x * -1;
+    return x;
 }
 
 
@@ -111,7 +120,13 @@ function getLinearEquationRoot(a, b) {
  *   (0,1) (1,2)     => 0
  */
 function getAngleBetweenVectors(x1, y1, x2, y2) {
-    throw new Error('Not implemented');
+    const scalarAB = x1 * x2 + y1 * y2;
+    const dlinaA = Math.sqrt(x1 * x1 + y1 * y1);
+    const dlinaB = Math.sqrt(x2 * x2 + y2 * y2);
+    const cosO = scalarAB / (dlinaA * dlinaB);
+    const angleRes = Math.acos(cosO);
+
+    return angleRes;
 }
 
 /**
@@ -127,7 +142,7 @@ function getAngleBetweenVectors(x1, y1, x2, y2) {
  *     0     => 0
  */
 function getLastDigit(value) {
-    throw new Error('Not implemented');
+    return value % 10;
 }
 
 
@@ -143,7 +158,7 @@ function getLastDigit(value) {
  * '-525.5'     => -525.5
  */
 function parseNumberFromString(value) {
-    throw new Error('Not implemented');
+    return parseFloat(value);
 }
 
 /**
@@ -160,7 +175,7 @@ function parseNumberFromString(value) {
  *   1,2,3   => 3.741657386773941
  */
 function getParallelipidedDiagonal(a,b,c) {
-    throw new Error('Not implemented');
+    return Math.sqrt(a*a + b*b + c*c);
 }
 
 /**
@@ -181,7 +196,7 @@ function getParallelipidedDiagonal(a,b,c) {
  *   1678, 3  => 2000
  */
 function roundToPowerOfTen(num, pow) {
-    throw new Error('Not implemented');
+	return Math.round((num)/ Math.pow(10, pow)) * Math.pow(10, pow);
 }
 
 /**
@@ -202,7 +217,17 @@ function roundToPowerOfTen(num, pow) {
  *   17 => true
  */
 function isPrime(n) {
-    throw new Error('Not implemented');
+    var counter = 0;
+    for(let i=0; i<n+1; i++) {
+      if (n % i == 0){
+        counter ++;
+      }
+    }
+  if (counter == 2){
+    return true;
+  } else {
+    return false;
+  };
 }
 
 /**
