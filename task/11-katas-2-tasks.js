@@ -34,7 +34,34 @@
  *
  */
 function parseBankAccount(bankAccount) {
-    throw new Error('Not implemented');
+    const DIGITS = {
+        " _ | ||_|": "0",
+        "     |  |": "1",
+        " _  _||_ ": "2",
+        " _  _| _|": "3",
+        "   |_|  |": "4",
+        " _ |_  _|": "5",
+        " _ |_ |_|": "6",
+        " _   |  |": "7",
+        " _ |_||_|": "8",
+        " _ |_| _|": "9",
+    };
+
+    let lines = bankAccount.split("\n");
+    if (lines.length < 3) return NaN;
+
+    let result = "";
+
+    for (let i = 0; i < 27; i += 3) {
+        let digitString =
+            lines[0].slice(i, i + 3) +
+            lines[1].slice(i, i + 3) +
+            lines[2].slice(i, i + 3);
+
+        result += DIGITS[digitString] || "?";
+    }
+
+    return result.includes("?") ? NaN : Number(result);
 }
 
 
@@ -63,7 +90,26 @@ function parseBankAccount(bankAccount) {
  *                                                                                                'characters.'
  */
 function* wrapText(text, columns) {
-    throw new Error('Not implemented');
+    if (columns >= Number.MAX_SAFE_INTEGER) {
+        yield text;
+        return;
+    }
+
+    let words = text.split(" ");
+    let line = "";
+
+    for (let word of words) {
+        if (line.length + word.length + (line.length > 0 ? 1 : 0) > columns) {
+            yield line;
+            line = word;
+        } else {
+            line += (line.length > 0 ? " " : "") + word;
+        }
+    }
+
+    if (line) {
+        yield line;
+    }
 }
 
 
@@ -135,7 +181,60 @@ function getPokerHandRank(hand) {
  *    '+-------------+\n'
  */
 function* getFigureRectangles(figure) {
-   throw new Error('Not implemented');
+    const lines = figure.split("\n");
+    const height = lines.length;
+    const width = lines[0].length;
+
+    for (let y = 0; y < height; y++) {
+        for (let x = 0; x < width; x++) {
+            if (lines[y][x] === "+") {
+                for (let bottomY = y + 1; bottomY < height; bottomY++) {
+                    if (lines[bottomY][x] === "+") {
+                        for (let rightX = x + 1; rightX < width; rightX++) {
+                            if (lines[y][rightX] === "+") {
+                                if (lines[bottomY][rightX] === "+") {
+                                    if (isRectangle(lines, x, y, rightX, bottomY)) {
+                                        yield drawRectangle(rightX - x + 1, bottomY - y + 1);
+                                        rightX = width;
+                                        bottomY = height;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+function isRectangle(lines, startX, startY, endX, endY) {
+    for (let y = startY; y <= endY; y++) {
+        for (let x = startX; x <= endX; x++) {
+            if (y === startY || y === endY) {
+                if ((x === startX || x === endX) && lines[y][x] !== "+") {
+                    return false;
+                }
+            } else {
+                if (lines[y][x] === "+") {
+                    return false;
+                }
+                if ((x === startX || x === endX) && lines[y][x] !== "|") {
+                    return false;
+                }
+            }
+        }
+    }
+    return true;
+}
+
+function drawRectangle(width, height) {
+    let rectangle = "+" + "-".repeat(width - 2) + "+\n";
+    for (let y = 1; y < height - 1; y++) {
+        rectangle += "|" + " ".repeat(width - 2) + "|\n";
+    }
+    rectangle += "+" + "-".repeat(width - 2) + "+\n";
+    return rectangle;
 }
 
 
